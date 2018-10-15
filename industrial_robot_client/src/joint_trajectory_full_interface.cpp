@@ -1,6 +1,7 @@
 #include <algorithm>
 #include "industrial_robot_client/joint_trajectory_full_interface.h"
 #include "simple_message/joint_traj_pt.h"
+#include "simple_message/joint_traj_pt_full.h"
 #include "industrial_utils/param_utils.h"
 
 
@@ -36,13 +37,19 @@ bool JointTrajectoryFullInterface::trajectory_to_msgs(const trajectory_msgs::Joi
 	if (!is_valid(*traj))
 		return false;
 
+	int valid_fields = industrial::joint_traj_pt_full::ValidFieldTypes::TIME;
+	valid_fields |= industrial::joint_traj_pt_full::ValidFieldTypes::POSITION;
+	valid_fields |= industrial::joint_traj_pt_full::ValidFieldTypes::VELOCITY;
+	valid_fields |= industrial::joint_traj_pt_full::ValidFieldTypes::ACCELERATION;
+	
+
 	for (size_t i=0; i<traj->points.size(); ++i)
   	{
 		trajectory_msgs::JointTrajectoryPoint rbt_pt;
 
 		rbt_pt = traj->points[i];		// 获取第一个点位
-
-    	JointTrajPtFullMessage msg = create_message(0, 0xff, 0.23, i, rbt_pt.positions, \
+		// rbt_pt.duration.toNSec()
+    	JointTrajPtFullMessage msg = create_message(0, i, valid_fields, rbt_pt.time_from_start.toSec(), rbt_pt.positions, \
 			rbt_pt.velocities, rbt_pt.accelerations);		// 构建消息
 
     	msgs->push_back(msg);
@@ -58,11 +65,16 @@ JointTrajPtFullMessage JointTrajectoryFullInterface::create_message(int robot_id
   	industrial::joint_data::JointData pos, vel, acc;
   	ROS_ASSERT(joint_pos.size() <= (unsigned int)pos.getMaxNumJoints());
 
+
+
+
   	for (size_t i=0; i<joint_pos.size(); ++i){
     	pos.setJoint(i, joint_pos[i]);
 		vel.setJoint(i, velocity[i]);
 		acc.setJoint(i, accelerations[i]);
 	}
+
+	ROS_ERROR("time=%f \n", time);
 
   	industrial::joint_traj_pt_full::JointTrajPtFull pt;
   	pt.init(robot_id, seq, valid_fields, time, pos, vel, acc);
