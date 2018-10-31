@@ -15,10 +15,11 @@ add_definitions(-DLINUXSOCKETS=1)  #build using LINUX SOCKETS libraries
 set(SRC_FILES src/joint_relay_handler.cpp
               src/robot_status_relay_handler.cpp
               src/joint_trajectory_downloader.cpp
-			  src/joint_trajectory_full_downloader.cpp
+              src/joint_trajectory_full_downloader.cpp
               src/joint_trajectory_streamer.cpp
               src/joint_trajectory_interface.cpp
               src/joint_trajectory_full_interface.cpp
+              src/joint_trajectory_cubic_downloader.cpp
               src/robot_state_interface.cpp
               src/utils.cpp)
 
@@ -108,6 +109,13 @@ target_link_libraries(motion_download_full_interface
   simple_message
   ${catkin_LIBRARIES})
 
+add_executable(motion_download_cubic_interface
+        src/generic_cubic_joint_downloader_node.cpp)
+target_link_libraries(motion_download_cubic_interface
+  industrial_robot_client
+  simple_message
+  ${catkin_LIBRARIES})
+
 # The following executables(nodes) are for applications where the robot
 # controller and pc have different same byte order (i.e. byte swapping IS
 # required)
@@ -174,6 +182,8 @@ install(TARGETS
         motion_streaming_interface_bswap 
         motion_download_interface_bswap 
         joint_trajectory_action 
+        motion_download_full_interface
+        motion_download_cubic_interface
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(

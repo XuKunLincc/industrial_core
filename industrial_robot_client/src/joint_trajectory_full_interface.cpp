@@ -61,7 +61,7 @@ bool JointTrajectoryFullInterface::trajectory_to_msgs(const trajectory_msgs::Joi
 
 JointTrajPtFullMessage JointTrajectoryFullInterface::create_message(int robot_id, int seq, int valid_fields, float time, std::vector<double> joint_pos, \
 		std::vector<double> velocity, std::vector<double> accelerations){
-
+	
   	industrial::joint_data::JointData pos, vel, acc;
   	ROS_ASSERT(joint_pos.size() <= (unsigned int)pos.getMaxNumJoints());
 
