@@ -71,7 +71,7 @@ bool JointTrajectoryCubicDownloader::send_to_robot(const std::vector<JointTrajPt
     return rslt;
 }
 
-JointTrajPtFullMessage JointTrajectoryCubicDownloader::sample_traj(std::vector<JointTrajPtFullMessage>& points, int time){
+JointTrajPtFullMessage JointTrajectoryCubicDownloader::sample_inter(std::vector<JointTrajPtFullMessage>& points, int time){
     int pointSize = points.size();
     industrial::shared_types::shared_real endTime, pointTime;
 
@@ -95,7 +95,7 @@ JointTrajPtFullMessage JointTrajectoryCubicDownloader::sample_traj(std::vector<J
     return cubic(points[i-1], points[i], time);
 }
 
-JointTrajPtFullMessage JointTrajectoryCubicDownloader::cubic(JointTrajPtFullMessage start, JointTrajPtFullMessage end, int time){
+JointTrajPtFullMessage JointTrajectoryCubicDownloader::quintic_inter(JointTrajPtFullMessage start, JointTrajPtFullMessage end, int time){
 
     return start;
 }

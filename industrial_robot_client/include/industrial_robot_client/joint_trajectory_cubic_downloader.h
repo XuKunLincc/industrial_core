@@ -26,7 +26,7 @@ public:
 	* @autor		xukunlin
 	* @date			2018/10/31
 	*/
-  JointTrajPtFullMessage sample_traj(std::vector<JointTrajPtFullMessage>& points, int time);
+  JointTrajPtFullMessage sample_inter(std::vector<JointTrajPtFullMessage>& points, int time);
 
 private:
 	/** 
@@ -39,7 +39,7 @@ private:
 	* @autor		xukunlin
 	* @date			2018/10/31
 	*/
-  JointTrajPtFullMessage cubic(JointTrajPtFullMessage start, JointTrajPtFullMessage end, int time);
+  JointTrajPtFullMessage quintic_inter(JointTrajPtFullMessage start, JointTrajPtFullMessage end, int time);
 
 };
 
